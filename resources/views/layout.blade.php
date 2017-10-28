@@ -17,7 +17,13 @@
                 <a class="{{ activeMenu('/') }}" href="{{ route('home') }}"> Home </a>
                 <a class="{{ activeMenu('saludos/*') }}" href="{{ route('saludo', 'Josu') }}"> Saludos </a>
                 <a class="{{ activeMenu('messages/create') }}" href="{{ route('messages.create') }}"> Crear mensaje </a>
-                <a class="{{ activeMenu('messages') }}" href="{{ route('messages.index') }}"> Mensajes </a>
+                @if (auth()->check())
+                    <a class="{{ activeMenu('messages') }}" href="{{ route('messages.index') }}"> Mensajes </a>
+                    <a class="{{ activeMenu('logout') }}" href="{{ route('logout') }}"> Cerrar sesión de {{ auth()->user()->name }} </a>
+                @endif
+                @if (auth()->guest())
+                    <a class="{{ activeMenu('login') }}" href="{{ route('login') }}"> Login </a>
+                @endif
             </nav>
         </header>
         <div class="content">
