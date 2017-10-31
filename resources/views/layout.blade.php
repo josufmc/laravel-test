@@ -17,18 +17,18 @@
             <div class="collapse navbar-collapse" id="collapsibleNavId">
                 <ul class="nav navbar-nav">
                     <li class="nav-item {{ activeMenu('/') }}">
-                        <a class="" href="{{ route('home') }}"> Home </a>
+                        <a class="nav-link" href="{{ route('home') }}"> Home </a>
                     </li>
                     <li class="nav-item {{ activeMenu('saludos/*') }}">
-                        <a class="" href="{{ route('saludo', 'Josu') }}"> Saludos </a>
+                        <a class="nav-link" href="{{ route('saludo', 'Josu') }}"> Saludos </a>
                     </li>
                     <li class="nav-item {{ activeMenu('messages/create') }}">
-                        <a class="" href="{{ route('messages.create') }}"> Crear mensaje </a>
+                        <a class="nav-link" href="{{ route('messages.create') }}"> Crear mensaje </a>
                     </li>
 
                     @if (auth()->check())
                         <li class="nav-item {{ activeMenu('messages') }}">
-                            <a class="" href="{{ route('messages.index') }}"> Mensajes </a>
+                            <a class="nav-link" href="{{ route('messages.index') }}"> Mensajes </a>
                         </li>
                     @endif
                 </ul>
@@ -36,18 +36,27 @@
                 <ul class="nav navbar-nav navbar-right">
                     @if (auth()->check())
                         <li class="nav-item {{ activeMenu('logout') }}">
-                            <a class="" href="{{ route('logout') }}"> Cerrar sesión de {{ auth()->user()->name }} </a>
+                            <a class="nav-link" href="{{ route('logout') }}"> Cerrar sesión de {{ auth()->user()->name }} </a>
                         </li>
                     @endif
                     @if (auth()->guest())
                         <li class="nav-item {{ activeMenu('login') }}">
-                            <a class="" href="{{ route('login') }}"> Login </a>
+                            <a class="nav-link" href="{{ route('login') }}"> Login </a>
                         </li>
                     @endif
+                    {{--  <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Action</a>
+                        </div>
+                    </li>  --}}
                 </ul>
             </div>
         </header>
-        <div class="content">
+        <div class="container">
             @yield('contenido')
         </div>
     </body>
