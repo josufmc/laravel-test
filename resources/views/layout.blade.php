@@ -30,7 +30,7 @@
                         <li class="nav-item {{ activeMenu('messages') }}">
                             <a class="nav-link" href="{{ route('messages.index') }}"> Mensajes </a>
                         </li>
-                        @if (auth()->user()->role === 'admin')
+                        @if (auth()->user()->hasRoles(['admin', 'student']))
                             <li class="nav-item {{ activeMenu('users') }}">
                                 <a class="nav-link" href="{{ route('users.index') }}"> Usuarios </a>
                             </li>
@@ -47,8 +47,9 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ auth()->user()->name }}</a>
                             <div class="dropdown-menu">
-                                <a class="nav-link" href="{{ route('logout') }}"> Cerrar sesión </a>
+                                <a class="nav-link" href="{{ route('users.edit', auth()->id()) }}"> Mi cuenta </a>
                                 <div class="dropdown-divider"></div>
+                                <a class="nav-link" href="{{ route('logout') }}"> Cerrar sesión </a>
                             </div>
                         </li>
                     @endif

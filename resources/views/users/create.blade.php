@@ -1,7 +1,7 @@
 @extends('layout')
 @section('contenido')
     <h1> Crear mensaje </h1>
-    <form method="post" action="{{ route('messages.store') }}">
+    <form method="post" action="{{ route('users.store') }}">
         <p><label for="nombre"> Nombre
             <input type="text" name="nombre" class="form-control" value="{{ old('nombre') }}">
             {!! $errors->first('nombre', '<span class=error>:message</span>') !!}

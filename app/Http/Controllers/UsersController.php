@@ -4,9 +4,15 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use App\Http\Requests\UpdateUserRequest;
 
 class UsersController extends Controller
 {
+    
+    public function __construct(){
+        $this->middleware(['auth', 'roles:admin,student']);
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +31,7 @@ class UsersController extends Controller
      */
     public function create()
     {
-        //
+        return view('users.create');
     }
 
     /**
@@ -36,7 +42,8 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        User::create($request->all());
+        return redirect()->route('users.create')->with('info', 'Usuario creado!');
     }
 
     /**
@@ -47,7 +54,8 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::findOrFail($id);
+        return view("users.show", compact('user'));
     }
 
     /**
@@ -58,7 +66,8 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::findOrFail($id);
+        return view('users.edit', compact('user'));
     }
 
     /**
@@ -68,9 +77,13 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, $id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->update($request->all());
+        // Redirecionar
+        //return redirect()->route('users.index');
+        return back()->with('info', 'Usuario actualizado');
     }
 
     /**
@@ -81,6 +94,9 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->delete();
+        // Redirecionar
+        return redirect()->route('users.index');
     }
 }

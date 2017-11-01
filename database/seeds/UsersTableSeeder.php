@@ -16,15 +16,19 @@ class UsersTableSeeder extends Seeder
         User::create(array(
             'name'     => 'Josu',
             'email'    => 'josufmc@hotmail.com',
-            'password' => Hash::make('passw'),
-            'role' => 'admin'
+            'password' => Hash::make('passw')
         ));
 
         User::create(array(
             'name'     => 'Jorge',
             'email'    => 'jorge@hotmail.com',
-            'password' => Hash::make('passw'),
-            'role' => 'moderator'
+            'password' => Hash::make('passw')
+        ));
+
+        User::create(array(
+            'name'     => 'Estudiante',
+            'email'    => 'estudiante@hotmail.com',
+            'password' => Hash::make('passw')
         ));
     }
 }

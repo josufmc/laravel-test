@@ -17,9 +17,13 @@
             @foreach ($users as $user)
                 <tr>
                     <td>{{ $user->id }}</td>
-                    <td><a href="{{ route('users.show', $user->id) }}">{{ $user->nombre }}</a></td>
+                    <td><a href="{{ route('users.show', $user->id) }}">{{ $user->name }}</a></td>
                     <td>{{ $user->email }}</td>
-                    <td>{{ $user->role }}</td>
+                    <td>
+                        @foreach ($user->roles as $role)
+                            {{ $role->display_name }}
+                        @endforeach
+                    </td>
                     <td>
                         <a href="{{ route('users.edit', $user->id) }}" class="btn btn-info btn-xs">Editar</a>
                         <form method="post" style="display:inline;" action="{{ route('users.destroy', $user->id) }}">
