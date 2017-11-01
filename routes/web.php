@@ -19,3 +19,4 @@ Route::post('login', 'Auth\LoginController@login');
 Route::get('logout', ['as' => 'logout', 'uses' => 'Auth\LoginController@logout']);
 
 Route::resource('messages', 'MessagesController');
+Route::resource('users', 'UsersController');

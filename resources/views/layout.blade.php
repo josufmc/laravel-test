@@ -30,34 +30,34 @@
                         <li class="nav-item {{ activeMenu('messages') }}">
                             <a class="nav-link" href="{{ route('messages.index') }}"> Mensajes </a>
                         </li>
+                        @if (auth()->user()->role === 'admin')
+                            <li class="nav-item {{ activeMenu('users') }}">
+                                <a class="nav-link" href="{{ route('users.index') }}"> Usuarios </a>
+                            </li>
+                        @endif
                     @endif
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
-                    @if (auth()->check())
-                        <li class="nav-item {{ activeMenu('logout') }}">
-                            <a class="nav-link" href="{{ route('logout') }}"> Cerrar sesión de {{ auth()->user()->name }} </a>
-                        </li>
-                    @endif
                     @if (auth()->guest())
                         <li class="nav-item {{ activeMenu('login') }}">
                             <a class="nav-link" href="{{ route('login') }}"> Login </a>
                         </li>
+                    @else
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ auth()->user()->name }}</a>
+                            <div class="dropdown-menu">
+                                <a class="nav-link" href="{{ route('logout') }}"> Cerrar sesión </a>
+                                <div class="dropdown-divider"></div>
+                            </div>
+                        </li>
                     @endif
-                    {{--  <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Action</a>
-                        </div>
-                    </li>  --}}
                 </ul>
             </div>
         </header>
         <div class="container">
             @yield('contenido')
         </div>
+        <script src="{{ url('/') }}/js/app.js"></script>
     </body>
 </html>
