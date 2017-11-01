@@ -10,7 +10,8 @@ class UsersController extends Controller
 {
     
     public function __construct(){
-        $this->middleware(['auth', 'roles:admin,student']);
+        $this->middleware('auth', ['except' => ['show']]);
+        $this->middleware('roles:admin,student', ['except' => ['edit', 'update', 'show']]);
     }
     
     /**
@@ -67,6 +68,7 @@ class UsersController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
+        $this->authorize('edit', $user);
         return view('users.edit', compact('user'));
     }
 
@@ -80,6 +82,7 @@ class UsersController extends Controller
     public function update(UpdateUserRequest $request, $id)
     {
         $user = User::findOrFail($id);
+        $this->authorize('update', $user);        
         $user->update($request->all());
         // Redirecionar
         //return redirect()->route('users.index');
@@ -95,8 +98,9 @@ class UsersController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
+        $this->authorize('destroy', $user);
         $user->delete();
         // Redirecionar
-        return redirect()->route('users.index');
+        return back();
     }
 }
