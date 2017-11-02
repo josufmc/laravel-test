@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Role;
+use App\Message;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -34,17 +35,14 @@ class User extends Authenticatable
 
 
     public function hasRoles(array $roles){
-        foreach($roles as $role){
-            foreach($this->roles as $userRole){
-                if ($userRole->name === $role){
-                    return true;
-                }
-            }
-        }
-        return false;
+        return $this->roles->pluck('name')->intersect($roles)->count() > 0;
     }
 
     public function isAdmin(){
         return $this->hasRoles(['admin']);
+    }
+
+    public function messages(){
+        return $this->hasMany(Message::class);
     }
 }

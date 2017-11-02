@@ -3,7 +3,7 @@
 @section('contenido')
     <h1>Mensaje: {{ $message->id }}</h1>
 
-    <table>
+    <table class="table">
         <thead>
             <tr>
                 <th>Nombre</th>

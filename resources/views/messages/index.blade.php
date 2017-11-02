@@ -6,6 +6,7 @@
     <table class="table">
         <thead>
             <tr>
+                <th>ID</th>
                 <th>Nombre</th>
                 <th>Email</th>
                 <th>Mensaje</th>
@@ -15,9 +16,15 @@
         <tbody>
             @foreach ($messages as $message)
                 <tr>
-                    <td><a href="{{ route('messages.show', $message->id) }}">{{ $message->nombre }}</a></td>
-                    <td>{{ $message->email }}</td>
-                    <td>{{ $message->mensaje }}</td>
+                    <td>{{ $message->id }}</td>
+                    @if ($message->user_id)
+                        <td><a href="{{ route('users.show', $message->user->id) }}">{{ $message->user->name }}</a></td>
+                        <td>{{ $message->user->email }}</td>
+                    @else
+                        <td>{{ $message->nombre }}</td>
+                        <td>{{ $message->email }}</td>
+                    @endif
+                    <td><a href="{{ route('messages.show', $message->id) }}">{{ $message->mensaje }}</a></td>
                     <td>
                         <a href="{{ route('messages.edit', $message->id) }}" class="btn btn-info btn-xs">Editar</a>
                         <form method="post" style="display:inline;" action="{{ route('messages.destroy', $message->id) }}">
