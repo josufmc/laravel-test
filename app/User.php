@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Role;
+use App\Note;
 use App\Message;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -48,5 +49,9 @@ class User extends Authenticatable
 
     public function messages(){
         return $this->hasMany(Message::class);
+    }
+
+    public function note(){
+        return $this->morphOne(Note::class, 'notable');
     }
 }
