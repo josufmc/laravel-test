@@ -2,7 +2,11 @@
 @section('contenido')
     <h1> Crear mensaje </h1>
     <form method="post" action="{{ route('messages.store') }}">
-        @include('messages.form', ['message' => new App\Message(), 'btnText' => 'Crear'])
+        @include('messages.form', [
+            'message' => new App\Message(), 
+            'btnText' => 'Crear',
+            'showFields' => auth()->guest()
+            ])
         {!! method_field('POST') !!}
     </form>
 @stop

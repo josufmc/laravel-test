@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Tag;
 use App\Role;
 use App\Note;
 use App\Message;
@@ -53,5 +54,9 @@ class User extends Authenticatable
 
     public function note(){
         return $this->morphOne(Note::class, 'notable');
+    }
+
+    public function tags(){
+        return $this->morphToMany(Tag::class, 'taggable')->withTimestamps();
     }
 }
