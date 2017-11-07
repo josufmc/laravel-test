@@ -7,6 +7,7 @@ use App\Message;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use App\Events\MessageWasRecievedEvent;
 
 class MessagesController extends Controller
 {
@@ -55,9 +56,7 @@ class MessagesController extends Controller
             // auth()->user()->messages()->save($message);
         }
 
-        Mail::send('emails.contact', ['msg' => $message], function($mail) use ($message){
-            $mail->to($message->email, $message->name)->subject('Tu mensaje fue recibido');
-        });
+        event(new MessageWasRecievedEvent($message));
 
         // Redireccionar
         return redirect()->route('messages.create')->with('info', 'Mensaje creado!');
