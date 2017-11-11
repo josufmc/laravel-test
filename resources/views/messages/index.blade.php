@@ -3,6 +3,8 @@
 @section('contenido')
     <h1>Todos los mensajes</h1>
 
+    {!! $messages->appends(request()->query())->links('pagination::custom') !!}
+    
     <table class="table">
         <thead>
             <tr>
@@ -41,4 +43,6 @@
             @endforeach
         </tbody>
     </table>
+
+    {!! $messages->appends(request()->query())->links('pagination::custom') !!}
 @stop

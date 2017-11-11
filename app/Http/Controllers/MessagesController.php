@@ -25,7 +25,10 @@ class MessagesController extends Controller
     {
         //$messages = DB::table('messages')->get();
         //$messages = Message::all();
-        $messages = Message::with(['user', 'note', 'tags'])->get();
+        $regPag = 20;
+        $messages = Message::with(['user', 'note', 'tags'])
+            ->orderBy('created_at', request('sorted', 'ASC'))
+            ->paginate($regPag);
         //return $messages;
         return view("messages.index", compact('messages'));
     }
