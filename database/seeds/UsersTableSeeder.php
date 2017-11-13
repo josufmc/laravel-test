@@ -17,7 +17,7 @@ class UsersTableSeeder extends Seeder
         DB::table('assigned_roles')->truncate();
         User::truncate();
 
-        $password = bcrypt('passw');
+        $password = 'passw';
 
         $user = User::create(array(
             'name'     => 'Josu',
