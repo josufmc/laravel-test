@@ -7,6 +7,7 @@ use App\Message;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Cache;
 use App\Events\MessageWasRecievedEvent;
 
 class MessagesController extends Controller
@@ -29,6 +30,8 @@ class MessagesController extends Controller
         $messages = Message::with(['user', 'note', 'tags'])
             ->orderBy('created_at', request('sorted', 'ASC'))
             ->paginate($regPag);
+
+        Cache::put('messages.all', $messages, 5);
         //return $messages;
         return view("messages.index", compact('messages'));
     }

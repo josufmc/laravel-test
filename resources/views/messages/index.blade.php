@@ -3,7 +3,7 @@
 @section('contenido')
     <h1>Todos los mensajes</h1>
 
-    {!! $messages->appends(request()->query())->links('pagination::custom') !!}
+    {!! $messages->appends(request()->query())->links('pagination::default') !!}
     
     <table class="table">
         <thead>
@@ -44,5 +44,5 @@
         </tbody>
     </table>
 
-    {!! $messages->appends(request()->query())->links('pagination::custom') !!}
+    {!! $messages->appends(request()->query())->links('pagination::default') !!}
 @stop
