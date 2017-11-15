@@ -26,12 +26,28 @@ class MessagesController extends Controller
     {
         //$messages = DB::table('messages')->get();
         //$messages = Message::all();
-        $regPag = 20;
-        $messages = Message::with(['user', 'note', 'tags'])
-            ->orderBy('created_at', request('sorted', 'ASC'))
-            ->paginate($regPag);
+        $key = 'messages.page'. request('page', 1);
+        
+        /*$messages = [];
+        if (Cache::has($key)){
+            $messages = Cache::get($key);
+        } else {
+            $regPag = 20;
+            $messages = Message::with(['user', 'note', 'tags'])
+                ->orderBy('created_at', request('sorted', 'ASC'))
+                ->paginate($regPag);
+    
+            Cache::put($key, $messages, 5);
+        }*/
 
-        Cache::put('messages.all', $messages, 5);
+        $messages = Cache::rememberForever($key, function(){
+            $regPag = 20;
+            $messages = Message::with(['user', 'note', 'tags'])
+                ->orderBy('created_at', request('sorted', 'ASC'))
+                ->paginate($regPag);
+            return $messages;
+        });
+        
         //return $messages;
         return view("messages.index", compact('messages'));
     }
@@ -62,6 +78,8 @@ class MessagesController extends Controller
             // auth()->user()->messages()->save($message);
         }
 
+        Cache::flush();
+
         event(new MessageWasRecievedEvent($message));
 
         // Redireccionar
@@ -77,7 +95,12 @@ class MessagesController extends Controller
     public function show($id)
     {
         //$message = DB::table('messages')->where('id', $id)->first();
-        $message = Message::findOrFail($id);
+        
+        $key = 'messages.'. $id;
+        $message = Cache::rememberForever($key, function() use ($id){
+            $message = Message::findOrFail($id);
+            return $message;
+        });
         return view("messages.show", compact('message'));
     }
 
@@ -90,7 +113,11 @@ class MessagesController extends Controller
     public function edit($id)
     {
         //$message = DB::table('messages')->where('id', $id)->first();
-        $message = Message::findOrFail($id);
+        $key = 'messages.'. $id;
+        $message = Cache::rememberForever($key, function() use ($id){
+            $message = Message::findOrFail($id);
+            return $message;
+        });
         return view('messages.edit', compact('message'));
     }
 
@@ -113,6 +140,7 @@ class MessagesController extends Controller
 
         $message = Message::findOrFail($id);
         $message->update($request->all());
+        Cache::flush();
         // Redirecionar
         return redirect()->route('messages.index');
     }
@@ -128,6 +156,7 @@ class MessagesController extends Controller
         //$message = DB::table('messages')->where('id', $id)->delete();
         $message = Message::findOrFail($id);
         $message->delete();
+        Cache::flush();
         // Redirecionar
         return redirect()->route('messages.index');
     }

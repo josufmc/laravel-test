@@ -18,6 +18,10 @@ class SendAutoresponderListener
     public function handle(MessageWasRecievedEvent $event)
     {
         $message = $event->getMessage();
+
+        if (auth()->check()){
+            $message->email = auth()->user()->email;
+        }
         
         Mail::send('emails.contact', ['msg' => $message], function($mail) use ($message){
             $mail->to($message->email, $message->name)->subject('Tu mensaje fue recibido');
