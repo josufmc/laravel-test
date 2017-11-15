@@ -26,7 +26,7 @@ class MessagesController extends Controller
     {
         //$messages = DB::table('messages')->get();
         //$messages = Message::all();
-        $key = 'messages.page'. request('page', 1);
+        $key = 'messages.page.'. request('page', 1);
         
         /*$messages = [];
         if (Cache::has($key)){
@@ -40,7 +40,7 @@ class MessagesController extends Controller
             Cache::put($key, $messages, 5);
         }*/
 
-        $messages = Cache::rememberForever($key, function(){
+        $messages = Cache::tags('messages')->rememberForever($key, function(){
             $regPag = 20;
             $messages = Message::with(['user', 'note', 'tags'])
                 ->orderBy('created_at', request('sorted', 'ASC'))
@@ -78,7 +78,7 @@ class MessagesController extends Controller
             // auth()->user()->messages()->save($message);
         }
 
-        Cache::flush();
+        Cache::tags('messages')->flush();
 
         event(new MessageWasRecievedEvent($message));
 
@@ -97,7 +97,7 @@ class MessagesController extends Controller
         //$message = DB::table('messages')->where('id', $id)->first();
         
         $key = 'messages.'. $id;
-        $message = Cache::rememberForever($key, function() use ($id){
+        $message = Cache::tags('messages')->rememberForever($key, function() use ($id){
             $message = Message::findOrFail($id);
             return $message;
         });
@@ -114,7 +114,7 @@ class MessagesController extends Controller
     {
         //$message = DB::table('messages')->where('id', $id)->first();
         $key = 'messages.'. $id;
-        $message = Cache::rememberForever($key, function() use ($id){
+        $message = Cache::tags('messages')->rememberForever($key, function() use ($id){
             $message = Message::findOrFail($id);
             return $message;
         });
@@ -140,7 +140,7 @@ class MessagesController extends Controller
 
         $message = Message::findOrFail($id);
         $message->update($request->all());
-        Cache::flush();
+        Cache::tags('messages')->flush();
         // Redirecionar
         return redirect()->route('messages.index');
     }
@@ -156,7 +156,7 @@ class MessagesController extends Controller
         //$message = DB::table('messages')->where('id', $id)->delete();
         $message = Message::findOrFail($id);
         $message->delete();
-        Cache::flush();
+        Cache::tags('messages')->flush();
         // Redirecionar
         return redirect()->route('messages.index');
     }
