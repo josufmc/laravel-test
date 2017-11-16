@@ -5,15 +5,16 @@ namespace App\Http\Controllers;
 use App\Message;
 use Illuminate\Support\Facades\Cache;
 use App\Events\MessageWasRecievedEvent;
-use App\Repositories\MessagesRepository;
+use App\Repositories\IMessagesRepository;
 use Symfony\Component\HttpFoundation\Request;
+use App\Repositories\CacheMessagesRepository;
 
 class MessagesController extends Controller
 {
     
     private $messagesRepository;
 
-    public function __construct(MessagesRepository $messagesRepository){
+    public function __construct(IMessagesRepository $messagesRepository){
         $this->middleware('auth', ['except' => ['create', 'store']]);
         $this->messagesRepository = $messagesRepository;
     }

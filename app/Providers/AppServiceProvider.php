@@ -5,6 +5,9 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 
+use App\Repositories\IMessagesRepository;
+use App\Repositories\CacheMessagesRepository;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -16,6 +19,8 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         Schema::defaultStringLength(191);
+
+        $this->app->bind(IMessagesRepository::class, CacheMessagesRepository::class);
     }
 
     /**
