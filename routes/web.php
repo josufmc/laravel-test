@@ -11,9 +11,9 @@
 |
 */
 
-DB::listen(function ($query){
+/*DB::listen(function ($query){
     echo("<pre>({$query->time}) {$query->sql}</pre>");
-});
+});*/
 
 Route::get('/', ['as' => 'home', 'uses' => 'PagesController@home']);
 Route::get('/saludo/{nombre}', ['as' => 'saludo', 'uses' => 'PagesController@saludo']);

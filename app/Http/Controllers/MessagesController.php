@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use DB;
 use App\Message;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
 use App\Events\MessageWasRecievedEvent;
+use App\Repositories\MessagesRepository;
+use Symfony\Component\HttpFoundation\Request;
 
 class MessagesController extends Controller
 {
     
-    public function __construct(){
+    private $messagesRepository;
+
+    public function __construct(MessagesRepository $messagesRepository){
         $this->middleware('auth', ['except' => ['create', 'store']]);
+        $this->messagesRepository = $messagesRepository;
     }
     
     /**
@@ -24,31 +25,7 @@ class MessagesController extends Controller
      */
     public function index()
     {
-        //$messages = DB::table('messages')->get();
-        //$messages = Message::all();
-        $key = 'messages.page.'. request('page', 1);
-        
-        /*$messages = [];
-        if (Cache::has($key)){
-            $messages = Cache::get($key);
-        } else {
-            $regPag = 20;
-            $messages = Message::with(['user', 'note', 'tags'])
-                ->orderBy('created_at', request('sorted', 'ASC'))
-                ->paginate($regPag);
-    
-            Cache::put($key, $messages, 5);
-        }*/
-
-        $messages = Cache::tags('messages')->rememberForever($key, function(){
-            $regPag = 20;
-            $messages = Message::with(['user', 'note', 'tags'])
-                ->orderBy('created_at', request('sorted', 'ASC'))
-                ->paginate($regPag);
-            return $messages;
-        });
-        
-        //return $messages;
+        $messages = $this->messagesRepository->getPaginatedMessages();
         return view("messages.index", compact('messages'));
     }
 
@@ -71,18 +48,8 @@ class MessagesController extends Controller
      */
     public function store(Request $request)
     {
-        $message = Message::create($request->all());
-        if (auth()->check()){
-            $message->user_id = auth()->user()->id;
-            $message->save();
-            // auth()->user()->messages()->save($message);
-        }
-
-        Cache::tags('messages')->flush();
-
+        $this->messagesRepository->storeMessage($request);
         event(new MessageWasRecievedEvent($message));
-
-        // Redireccionar
         return redirect()->route('messages.create')->with('info', 'Mensaje creado!');
     }
 
@@ -94,13 +61,7 @@ class MessagesController extends Controller
      */
     public function show($id)
     {
-        //$message = DB::table('messages')->where('id', $id)->first();
-        
-        $key = 'messages.'. $id;
-        $message = Cache::tags('messages')->rememberForever($key, function() use ($id){
-            $message = Message::findOrFail($id);
-            return $message;
-        });
+        $message = $this->messagesRepository->findById($id);
         return view("messages.show", compact('message'));
     }
 
@@ -112,12 +73,7 @@ class MessagesController extends Controller
      */
     public function edit($id)
     {
-        //$message = DB::table('messages')->where('id', $id)->first();
-        $key = 'messages.'. $id;
-        $message = Cache::tags('messages')->rememberForever($key, function() use ($id){
-            $message = Message::findOrFail($id);
-            return $message;
-        });
+        $message = $this->messagesRepository->findById($id);
         return view('messages.edit', compact('message'));
     }
 
@@ -130,18 +86,7 @@ class MessagesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Actualizar el mensaje
-        /*$message = DB::table('messages')->where('id', $id)->update([
-            "nombre" => $request->input('nombre'),
-            "email" => $request->input('email'),
-            "mensaje" => $request->input('mensaje'),
-            "updated_at" => Carbon::now()
-        ]);*/
-
-        $message = Message::findOrFail($id);
-        $message->update($request->all());
-        Cache::tags('messages')->flush();
-        // Redirecionar
+        $this->messagesRepository->update($request, $id);
         return redirect()->route('messages.index');
     }
 
@@ -153,11 +98,7 @@ class MessagesController extends Controller
      */
     public function destroy($id)
     {
-        //$message = DB::table('messages')->where('id', $id)->delete();
-        $message = Message::findOrFail($id);
-        $message->delete();
-        Cache::tags('messages')->flush();
-        // Redirecionar
+        $this->messagesRepository->destroy($id);
         return redirect()->route('messages.index');
     }
 }
