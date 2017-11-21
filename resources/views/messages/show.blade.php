@@ -13,8 +13,8 @@
         </thead>
         <tbody>
             <tr>
-                <td>{{ $message->nombre }}</td>
-                <td>{{ $message->email }}</td>
+                <td>{!! $message->present()->userName() !!}</td>
+                <td>{{ $message->present()->userEmail() }}</td>
                 <td>{{ $message->mensaje }}</td>
             </tr>
         </tbody>

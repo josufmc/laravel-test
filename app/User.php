@@ -6,6 +6,7 @@ use App\Tag;
 use App\Role;
 use App\Note;
 use App\Message;
+use App\Presenters\UserPresenter;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -58,5 +59,9 @@ class User extends Authenticatable
 
     public function tags(){
         return $this->morphToMany(Tag::class, 'taggable')->withTimestamps();
+    }
+
+    public function present(){
+        return new UserPresenter($this);
     }
 }
