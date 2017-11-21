@@ -7,7 +7,7 @@ use App\Events\MessageWasRecievedEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SendAutoresponderListener
+class SendAutoresponderListener implements ShouldQueue
 {
     /**
      * Handle the event.

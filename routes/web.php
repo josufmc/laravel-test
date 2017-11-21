@@ -15,6 +15,11 @@
     echo("<pre>({$query->time}) {$query->sql}</pre>");
 });*/
 
+/*Route::get('job', function(){
+    dispatch(new App\Jobs\SendMail());	// Podemos meter parámetreos en el constructor
+    return "Hecho!";
+});*/
+
 Route::get('/', ['as' => 'home', 'uses' => 'PagesController@home']);
 Route::get('/saludo/{nombre}', ['as' => 'saludo', 'uses' => 'PagesController@saludo']);
 

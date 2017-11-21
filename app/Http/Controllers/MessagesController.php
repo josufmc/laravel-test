@@ -49,7 +49,7 @@ class MessagesController extends Controller
      */
     public function store(Request $request)
     {
-        $this->messagesRepository->storeMessage($request);
+        $message = $this->messagesRepository->storeMessage($request);
         event(new MessageWasRecievedEvent($message));
         return redirect()->route('messages.create')->with('info', 'Mensaje creado!');
     }
