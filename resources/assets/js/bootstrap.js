@@ -43,11 +43,15 @@ if (token) {
  * allows your team to easily build robust real-time web applications.
  */
 
-// import Echo from 'laravel-echo'
+import Echo from 'laravel-echo'
+import io from 'socket.io-client'
 
-// window.Pusher = require('pusher-js');
+window.io = io;
 
-// window.Echo = new Echo({
-//     broadcaster: 'pusher',
-//     key: 'your-pusher-key'
-// });
+//window.Pusher = require('pusher-js');
+
+window.Echo = new Echo({
+    broadcaster: 'socket.io',
+    host: 'http://192.168.1.99:6001'
+    //key: 'your-pusher-key'
+});

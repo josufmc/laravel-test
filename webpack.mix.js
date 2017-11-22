@@ -11,13 +11,14 @@ let mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/assets/js/app.js', 
+mix.js(['resources/assets/js/app.js', 
     'node_modules/bootstrap-sass/assets/javascripts/bootstrap.js',
-    'node_modules/jquery/dist/jquery.js',
-    'public/js')
-   .sass('resources/assets/sass/app.scss', 'public/css').options({
+    'node_modules/jquery/dist/jquery.js'],
+    'public/js');
+
+mix.sass('resources/assets/sass/app.scss', 'public/css').options({
     processCssUrls: false
- });
+});
 
  mix.browserSync({
      proxy: 'http://localhost/blog/public'
