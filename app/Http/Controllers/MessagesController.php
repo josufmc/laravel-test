@@ -27,7 +27,7 @@ class MessagesController extends Controller
     public function index()
     {
         $messages = $this->messagesRepository->getPaginatedMessages();
-        return view("messages.index", compact('messages'));
+        //return view("messages.index", compact('messages'));
     }
 
     /**
