@@ -20,11 +20,12 @@ class SendAutoresponderListener implements ShouldQueue
         $message = $event->getMessage();
 
         if (auth()->check()){
+            $message->nombre = auth()->user()->name;
             $message->email = auth()->user()->email;
         }
         
         Mail::send('emails.contact', ['msg' => $message], function($mail) use ($message){
-            $mail->to($message->email, $message->name)->subject('Tu mensaje fue recibido');
+            $mail->to($message->email, $message->nombre)->subject('Tu mensaje fue recibido');
         });
     }
 }

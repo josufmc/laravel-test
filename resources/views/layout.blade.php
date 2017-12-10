@@ -15,11 +15,6 @@
     </head>
     <body>
         <header>
-            <?php
-            function activeMenu($url){
-                return request()->is($url) ? 'active' : '';
-            }
-            ?>
             <div class="collapse navbar-collapse" id="collapsibleNavId">
                 <ul class="nav navbar-nav">
                     <li class="nav-item {{ activeMenu('/') }}">

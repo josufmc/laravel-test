@@ -28,6 +28,11 @@ class SendNotificationToOwnerListener implements ShouldQueue
     public function handle(MessageWasRecievedEvent $event)
     {
         $message = $event->getMessage();
+
+        if (auth()->check()){
+            $message->nombre = auth()->user()->name;
+            $message->email = auth()->user()->email;
+        }
         
         Mail::send('emails.contact', ['msg' => $message], function($mail) use ($message){
             $mail->from($message->email, $message->name)
