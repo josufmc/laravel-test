@@ -14,4 +14,4 @@
     {!! $errors->first('mensaje', '<span class=error>:message</span>') !!}
 </label></p>
 {!! csrf_field() !!}
-<input type="submit" class="btn btn-primary" value="{{ $btnText }}">
+<input type="submit" class="btn btn-primary" id="save" value="{{ $btnText }}">

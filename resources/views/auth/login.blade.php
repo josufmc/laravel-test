@@ -9,6 +9,6 @@
             <input type="password" name="password" class="form-control" value="">
         </label></p>
         {!! csrf_field() !!}
-        <input type="submit" class="btn btn-primary" value="Enviar">
+        <input type="submit" id="enter" class="btn btn-primary" value="Enviar">
     </form>
 @stop
