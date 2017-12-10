@@ -12,7 +12,7 @@ class MessagesRepository implements IMessagesRepository {
     public function getPaginatedMessages(){
         $regPag = 20;
         $messages = Message::with(['user', 'note', 'tags'])
-            ->orderBy('created_at', request('sorted', 'ASC'))
+            ->orderBy('created_at', request('sorted', 'DESC'))
             ->paginate($regPag);
         return $messages;
     }
