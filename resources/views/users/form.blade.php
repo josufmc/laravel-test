@@ -1,3 +1,7 @@
+<p><label for="avatar"> Avatar
+    <input type="file" name="avatar">
+    {!! $errors->first('avatar', '<span class=error>:message</span>') !!}
+</label></p>
 <p><label for="name"> Nombre
     <input type="text" name="name" class="form-control" value="{{ old('name', $user->name) }}">
     {!! $errors->first('name', '<span class=error>:message</span>') !!}
